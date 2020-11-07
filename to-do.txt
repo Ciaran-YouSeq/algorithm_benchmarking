@@ -1,0 +1,50 @@
+1) get alignment benchmarking stuff back up to scratch
+2) get sc-RNA stuff back
+
+alignment benchmarking:
+docker container
+pass command to container
+automatically download data to volume mounted to container
+- should be able to take data with flags
+  -v, --vcf for gold standard vcf call file
+  -r, --reads for read data
+get results out the other end
+
+i want the results to be useful for comparison of algorithms, and also finding the right settings for algorithms
+results should tell you:
+- time requirements
+- memory requirements
+- optimal number of threads + thread scaling
+- k-mer size?
+
+
+need to:
+read data 
+run command and time it
+run command with valgrind
+run command with different numbers of threads?
+output data into files in volume
+do all the above with a script
+
+
+install stuff:
+alignment:
+rtg-tools
+valgrind
+vcf caller
+bwa
+OTHER ALIGNMENT ALGORITHMS
+
+download_data:
+GIAB vcf file
+GIAB raw reads
+
+make dockerfile:
+record all packages that must be installed
+mount a volume
+make a script to run benchmarks
+make a script to download the data
+
+trim-galore
+fast-qc
+
