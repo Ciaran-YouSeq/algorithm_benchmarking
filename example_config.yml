@@ -1,0 +1,23 @@
+#command
+#cleanup command?
+#timing
+#memory profiling
+#threading
+---
+- general_settings:
+        algorithm_name: "bwa"
+        algorithm_version: "1.0.0"
+- timed_command:
+        repeats: 3
+        threads: 32
+- thread_scaling:
+        repeats: 3
+        threads: 1,2,4,6,8,10,12,14,16,18,20,24,28,32,64
+- memory_footprint:
+        repeats: 3
+- settings_optimizer:
+        threads: true
+        k-mer_length: true
+        numa: true
+
+
