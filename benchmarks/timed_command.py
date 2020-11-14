@@ -3,8 +3,13 @@
 import argparse
 import yaml
 
-def parse_settings(settings):
-    print(settings)
+class timed_command:
+    def __init__(self, settings=None):
+        pass
 
-def run():
-    print("running timed_command")
+    def get_name:
+        return "timed_command"
+
+    def parse_settings(settings):
+        print(settings)
+

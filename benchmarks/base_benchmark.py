@@ -8,9 +8,9 @@ class general_settings:
         print("HERE at init")
         pass
 
-    def get_name:
-        return "general_settings"
+    def get_name(self):
+        print(__class__.__name__)
 
-    def parse_settings(settings):
+    def parse_settings(self, settings):
         print("here at parse")
         print(settings)

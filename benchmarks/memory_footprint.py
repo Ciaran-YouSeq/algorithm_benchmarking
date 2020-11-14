@@ -3,5 +3,12 @@
 import argparse
 import yaml
 
-def parse_settings(settings):
-    print(settings)
+class memory_footprint:
+    def __init__(self, settings=None):
+        pass
+
+    def get_name:
+        return "memory_footprint"
+
+    def parse_settings(settings):
+        print(settings)
