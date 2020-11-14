@@ -19,9 +19,13 @@ def get_args():
         help="""The config file""")
 
     args = argparser.parse_args()
+    
+    config = {}
 
     with open(args.config_file, "r") as yamlconfig:
-        config = yaml.safe_load(yamlconfig)
+        yamlconfig = yaml.load(yamlconfig)
+        for setting in yamlconfig:
+            config[list(setting.keys())[0]] = setting.values()
     return config
 
 config = get_args()
@@ -38,8 +42,7 @@ def get_benchmarks():
 def load_benchmarks(config, benchmarks):
     """parse config file, and load benchmarks from ./benchmarks/"""
     loaded_benchmarks = []
-    for benchmark_settings in config:
-        benchmark_settings_section = list(benchmark_settings.keys())[0]
+    for benchmark_settings_section in config.keys():
         for benchmark in benchmarks:
             if benchmark_settings_section == benchmark:
                 exec('import {}'.format(benchmark))
@@ -49,7 +52,7 @@ def load_benchmarks(config, benchmarks):
 def parse_settings(config, loaded_benchmarks):
     print(config)
     for benchmark in loaded_benchmarks:
-        print(benchmark.get_name())
+        settings=config[benchmark.get_name()]
     
 
 def dead_code():
