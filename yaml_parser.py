@@ -41,7 +41,7 @@ def get_benchmarks():
 
 
 def load_benchmarks(config, benchmarks):
-    """parse config file, and load benchmarks from ./benchmarks/"""
+    """load benchmarks listed in config from ./benchmarks/"""
     loaded_benchmarks = []
     for benchmark_settings_section in config.keys():
         for benchmark in benchmarks:
@@ -52,12 +52,14 @@ def load_benchmarks(config, benchmarks):
 
 
 def parse_settings(config, loaded_benchmarks):
+    """parse settings from config, and send them to the relevant loaded benchmark class objects"""
     print(config)
     for benchmark in loaded_benchmarks:
         parsed_settings_benchmark_objects = benchmark.parse_settings(config[benchmark.get_name()])
     return parsed_settings_benchmark_objects
 
 def run_benchmarks(loaded_benchmarks):
+    """run all loaded benchmark objects and output results to a dictionary"""
     results = {}
     for benchmark in loaded_benchmarks:
         results[benchmark.get_name()] = benchmark.run(benchmark.run(benchmark.run_benchmark()))
@@ -65,7 +67,9 @@ def run_benchmarks(loaded_benchmarks):
     return results
 
 def write_results(config, results):
+    """json dump results dictionary to date+time stamped file tagged with program name and version"""
     #join config and results dicts together, then json dump
+    date_and_time_stamp = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
     with open('/data/alignment_benchmarking.json', 'w') as json_file:
         json.dump(results, json_file)
     
