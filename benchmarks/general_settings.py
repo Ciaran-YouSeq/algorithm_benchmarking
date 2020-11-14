@@ -2,15 +2,12 @@
 
 import argparse
 import yaml
+import base_benchmark
 
-class general_settings:
-    def __init__(self, settings=None):
-        print("HERE at init")
-        pass
+class general_settings(base_benchmark.base_benchmark):
+    def __init__(self):
+        base_benchmark.base_benchmark.__init__(self)
 
-    def get_name:
-        return "general_settings"
-
-    def parse_settings(settings):
-        print("here at parse")
-        print(settings)
+    def run(self):
+        return "running" + get_name(self)
+        

@@ -2,14 +2,12 @@
 
 import argparse
 import yaml
+import base_benchmark
 
-class settings_optimizer:
-    def __init__(self, settings=None):
-        pass
+class settings_optimizer(base_benchmark.base_benchmark):
+    def __init__(self):
+        base_benchmark.base_benchmark.__init__(self)
 
-    def get_name:
-        return "settings_optimizer"
-
-    def parse_settings(settings):
-        print(settings)
-
+    def run(self):
+        return "running" + get_name(self)
+        

@@ -2,13 +2,12 @@
 
 import argparse
 import yaml
+import base_benchmark
 
-class memory_footprint:
-    def __init__(self, settings=None):
-        pass
+class memory_footprint(base_benchmark.base_benchmark):
+    def __init__(self):
+        base_benchmark.base_benchmark.__init__(self)
 
-    def get_name:
-        return "memory_footprint"
-
-    def parse_settings(settings):
-        print(settings)
+    def run(self):
+        return "running" + get_name(self)
+        

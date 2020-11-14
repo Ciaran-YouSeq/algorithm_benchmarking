@@ -2,14 +2,12 @@
 
 import argparse
 import yaml
+import base_benchmark
 
-class thread_scaling:
-    def __init__(self, settings=None):
-        pass
+class thread_scaling(base_benchmark.base_benchmark):
+    def __init__(self):
+        base_benchmark.base_benchmark.__init__(self)
 
-    def get_name:
-        return "thread_scaling"
-
-    def parse_settings(settings):
-        print(settings)
-
+    def run(self):
+        return "running" + get_name(self)
+        

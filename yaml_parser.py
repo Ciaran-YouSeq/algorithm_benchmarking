@@ -40,14 +40,11 @@ def load_benchmarks(config, benchmarks):
     loaded_benchmarks = []
     for benchmark_settings in config:
         benchmark_settings_section = list(benchmark_settings.keys())[0]
-        print(benchmark_settings)
         for benchmark in benchmarks:
             if benchmark_settings_section == benchmark:
                 exec('import {}'.format(benchmark))
-                #loaded_benchmarks.append(eval(benchmark).parse_settings(benchmark_settings))
                 loaded_benchmarks.append(exec("{benchmark}.{benchmark}".format(benchmark=benchmark)))
-                #loaded_benchmarks.append(exec("{benchmark}.{benchmark}.parse_settings({benchmark_settings})".format(benchmark=benchmark, benchmark_settings=benchmark_settings)))
-    #if list item starts with X, send this section to benchmark script for X
+    print(type(loaded_benchmarks[0]))
     return loaded_benchmarks
 
 def parse_settings(config, loaded_benchmarks):
