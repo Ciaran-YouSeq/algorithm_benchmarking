@@ -8,7 +8,7 @@ class base_benchmark:
         print("HERE at init")
 
     def get_name(self):
-        return __class__.__name__
+        return self.name
 
     def parse_settings(self, settings):
         print("here at parse")
