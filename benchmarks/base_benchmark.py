@@ -12,5 +12,6 @@ class base_benchmark:
 
     def parse_settings(self, settings):
         print("here at parse")
-        self.settings = settings
+        self.settings = list(settings)[0]
+        print(self.settings)
 
