@@ -7,10 +7,7 @@ import sys
 sys.path.insert(1, './benchmarks/')
 
 def get_args():
-    """Parse the input parameters for benchmarking"""
-
-    description =  "proofreader for yaml, checking that all neccessary settings are set"
-    yml_file_help = "YML file name"
+    """Parse the input yaml, and store settings as a nested dictionary"""
 
     argparser = argparse.ArgumentParser()
     argparser.add_argument(
@@ -29,6 +26,7 @@ def get_args():
     return config
 
 config = get_args()
+
 
 def get_benchmarks():
     """find all benchmarks"""
@@ -49,10 +47,11 @@ def load_benchmarks(config, benchmarks):
                 loaded_benchmarks.append(eval("{benchmark}.{benchmark}()".format(benchmark=benchmark)))
     return loaded_benchmarks
 
+
 def parse_settings(config, loaded_benchmarks):
     print(config)
     for benchmark in loaded_benchmarks:
-        settings=config[benchmark.get_name()]
+        parsed_settings_benchmark_objects = benchmark.parse_settings(config[benchmark.get_name()])
     
 
 def dead_code():
