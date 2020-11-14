@@ -10,5 +10,6 @@ class thread_scaling(base_benchmark.base_benchmark):
         self.name = __class__.__name__
 
     def run(self):
-        return "running" + get_name(self)
-        
+        print("running " + self.get_name())
+        print(self.settings)
+

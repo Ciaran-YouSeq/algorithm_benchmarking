@@ -52,22 +52,11 @@ def parse_settings(config, loaded_benchmarks):
     print(config)
     for benchmark in loaded_benchmarks:
         parsed_settings_benchmark_objects = benchmark.parse_settings(config[benchmark.get_name()])
-    
-
-def dead_code():
-    parsed_settings = []
-    print(config)
-    for benchmark_settings in config:
-        benchmark_settings_section = list(benchmark_settings.keys())[0]
-    for benchmark in loaded_benchmarks:
-        parsed_settings.append(exec("{benchmark}.parse_settings({benchmark_settings})".format(benchmark=benchmark, benchmark_settings=benchmark_settings)))
-
+    return parsed_settings_benchmark_objects
 
 def run_benchmarks(loaded_benchmarks):
-    print(loaded_benchmarks)
     for benchmark in loaded_benchmarks:
-        print(benchmark)
-        exec("{}.run(settings)".format(benchmark.keys()[0]))
+        benchmark.run()
 
 #{'general_settings': {'algorithm_name': 'bwa', 'algorithm_version': '1.0.0'}}
 
