@@ -15,10 +15,10 @@ class base_benchmark:
         self.settings = settings
         print(self.settings)
 
-    def run(self):
+    def run(self, run_benchmark_function):
         results = {}
         repeats = self.settings['repeats']
         for repeat in range(repeats):
-            results[repeat] = run_benchmark()
+            results[repeat] = eval("self.run_benchmark()")
         return results
 
