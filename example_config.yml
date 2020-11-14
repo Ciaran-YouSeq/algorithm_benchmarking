@@ -7,6 +7,7 @@
 - general_settings:
         algorithm_name: "bwa"
         algorithm_version: "1.0.0"
+        command: "sleep 10s"
 - timed_command:
         repeats: 3
         threads: 32
