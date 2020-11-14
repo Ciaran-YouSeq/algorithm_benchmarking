@@ -60,28 +60,28 @@ def parse_settings(config, loaded_benchmarks):
 def run_benchmarks(loaded_benchmarks):
     results = {}
     for benchmark in loaded_benchmarks:
-        results[benchmark.get_name()] = benchmark.run()
-    print(results)
+        results[benchmark.get_name()] = benchmark.run(benchmark.run(benchmark.run_benchmark()))
+        print(results)
     return results
 
 def write_results(config, results):
     #join config and results dicts together, then json dump
-    with open('/data/numa_data_extract.json', 'w') as json_file:
+    with open('/data/alignment_benchmarking.json', 'w') as json_file:
         json.dump(results, json_file)
     
 
 
-#{'general_settings': {'algorithm_name': 'bwa', 'algorithm_version': '1.0.0'}}
-
-print("get benchmarks")
-benchmarks = get_benchmarks()
-print("loaded benchmarks")
-loaded_benchmarks = load_benchmarks(config, benchmarks)
-print("parsed benchmarks")
-parse_settings = parse_settings(config, loaded_benchmarks)
-print("run benchmarks")
-run_benchmarks(loaded_benchmarks)
-
+if __name__ == "__main__":
+    print("get benchmarks")
+    benchmarks = get_benchmarks()
+    print("loaded benchmarks")
+    loaded_benchmarks = load_benchmarks(config, benchmarks)
+    print("parsed benchmarks")
+    parse_settings = parse_settings(config, loaded_benchmarks)
+    print("run benchmarks")
+    results = run_benchmarks(loaded_benchmarks)
+    print("write results")
+    write_results(config, results)
 # for thing in thing:
 #run thing with settings_dict
 #read config
