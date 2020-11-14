@@ -12,6 +12,13 @@ class base_benchmark:
 
     def parse_settings(self, settings):
         print("here at parse")
-        self.settings = list(settings)[0]
+        self.settings = settings
         print(self.settings)
+
+    def run(self):
+        results = {}
+        repeats = self.settings['repeats']
+        for repeat in range(repeats):
+            results[repeat] = run_benchmark()
+        return results
 
