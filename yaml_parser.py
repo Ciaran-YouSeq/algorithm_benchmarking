@@ -22,7 +22,9 @@ def get_args():
     with open(args.config_file, "r") as yamlconfig:
         yamlconfig = yaml.load(yamlconfig)
         for setting in yamlconfig:
-            config[list(setting.keys())[0]] = setting.values()
+            #config[list(setting.keys())[0]]['command'] = list(yamlconfig)[0]['general_settings']['command']
+            config[list(setting.keys())[0]] = list(setting.values())[0]
+            config[list(setting.keys())[0]]['command'] = list(yamlconfig)[0]['general_settings']['command']
     return config
 
 config = get_args()
