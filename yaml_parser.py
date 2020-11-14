@@ -4,6 +4,7 @@ import argparse
 import yaml
 import os
 import json
+from datetime import datetime
 import sys
 sys.path.insert(1, './benchmarks/')
 
@@ -63,14 +64,15 @@ def run_benchmarks(loaded_benchmarks):
     results = {}
     for benchmark in loaded_benchmarks:
         results[benchmark.get_name()] = benchmark.run(benchmark.run(benchmark.run_benchmark()))
-        print(results)
     return results
 
 def write_results(config, results):
     """json dump results dictionary to date+time stamped file tagged with program name and version"""
     #join config and results dicts together, then json dump
     date_and_time_stamp = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
-    with open('/data/alignment_benchmarking.json', 'w') as json_file:
+    algorithm_name = config['general_settings']['algorithm_name']
+    file_name = algorithm_name+"_"+date_and_time_stamp+".json"
+    with open(file_name, 'w') as json_file:
         json.dump(results, json_file)
     
 
