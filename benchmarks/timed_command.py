@@ -21,7 +21,7 @@ class timed_command(base_benchmark.base_benchmark):
                 _, stderr = process.communicate()
                 if process.returncode != 0:
                     print(stderr.splitlines()[:-1], file=sys.stderr)
-                    raise self.ExecutionError(command, process.returncode)
+                    raise ExecutionError(command, process.returncode)
         end = time.time() - start
         print(end)
         return end
