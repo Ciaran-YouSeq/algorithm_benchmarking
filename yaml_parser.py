@@ -43,11 +43,16 @@ def load_benchmarks(config, benchmarks):
         for benchmark in benchmarks:
             if benchmark_settings_section == benchmark:
                 exec('import {}'.format(benchmark))
-                loaded_benchmarks.append(exec("{benchmark}.{benchmark}".format(benchmark=benchmark)))
-    print(type(loaded_benchmarks[0]))
+                loaded_benchmarks.append(eval("{benchmark}.{benchmark}()".format(benchmark=benchmark)))
     return loaded_benchmarks
 
 def parse_settings(config, loaded_benchmarks):
+    print(config)
+    for benchmark in loaded_benchmarks:
+        print(benchmark.get_name())
+    
+
+def dead_code():
     parsed_settings = []
     print(config)
     for benchmark_settings in config:
