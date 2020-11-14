@@ -3,6 +3,7 @@
 import argparse
 import yaml
 import os
+import json
 import sys
 sys.path.insert(1, './benchmarks/')
 
@@ -57,8 +58,18 @@ def parse_settings(config, loaded_benchmarks):
     return parsed_settings_benchmark_objects
 
 def run_benchmarks(loaded_benchmarks):
+    results = {}
     for benchmark in loaded_benchmarks:
-        benchmark.run()
+        results[benchmark.get_name()] = benchmark.run()
+    print(results)
+    return results
+
+def write_results(config, results):
+    #join config and results dicts together, then json dump
+    with open('/data/numa_data_extract.json', 'w') as json_file:
+        json.dump(results, json_file)
+    
+
 
 #{'general_settings': {'algorithm_name': 'bwa', 'algorithm_version': '1.0.0'}}
 
