@@ -19,6 +19,6 @@ class base_benchmark:
         results = {}
         repeats = self.settings['repeats']
         for repeat in range(repeats):
-            results[repeat] = eval("self.run_benchmark()")
+            results["repeat_{repeat}".format(repeat=repeat+1)] = eval("self.run_benchmark()")
         return results
 
