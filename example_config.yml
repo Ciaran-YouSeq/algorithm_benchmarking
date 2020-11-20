@@ -1,8 +1,7 @@
-#command
+#things that need to be sorted still:
 #cleanup command?
-#timing
-#memory profiling
 #threading
+#settings optimizer
 ---
 - general_settings:
         algorithm_name: "bwa"
