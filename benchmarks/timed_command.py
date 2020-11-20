@@ -15,7 +15,11 @@ class timed_command(base_benchmark.base_benchmark):
     def run_benchmark(self):
         print("running " + self.get_name())
         print(self.settings)
-        command = self.settings['command']
+        if "threads" in self.settings.keys():
+            threads = self.settings['threads']
+        else:
+            threads = 32
+        command = self.settings['command'].format(threads=threads)
         start = time.time()
         with subprocess.Popen(command, stdout=sys.stderr, stderr=subprocess.PIPE, universal_newlines=True, shell=True) as process:
                 _, stderr = process.communicate()
