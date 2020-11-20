@@ -16,18 +16,19 @@ class thread_scaling(base_benchmark.base_benchmark):
         print("running " + self.get_name())
         print(self.settings)
         command = self.settings['command']
-        threads_list = self.settings['threads']
+        threads_list = self.settings['threads'].split(',')
         results = {}
         for threads in threads_list:
-            command.format(threads=threads)
-            print(command)
+            threaded_command = command.format(threads=threads)
+            print(threaded_command)
             start = time.time()
-            with subprocess.Popen(command, stdout=sys.stderr, stderr=subprocess.PIPE, universal_newlines=True, shell=True) as process:
+            with subprocess.Popen(threaded_command, stdout=sys.stderr, stderr=subprocess.PIPE, universal_newlines=True, shell=True) as process:
                 _, stderr = process.communicate()
                 if process.returncode != 0:
                     print(stderr.splitlines()[:-1], file=sys.stderr)
                     print("fucked it.")
             end = time.time() - start
-            print(end)
+            print(threads, end)
             results[threads] = end
-        return end
+            print(results)
+        return results 
