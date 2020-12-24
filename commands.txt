@@ -1,3 +1,8 @@
-bowtie2, bowtie2 -q -x /alignment_data/bowtie_index/GCA_000001405.15_GRCh38_full_analysis_set.fna.bowtie_index -1 /alignment_data/paired1.namesort.fq -2 /alignment_data/paired2.namesort.fq
+bowtie2, bowtie2 -p 32 -q -x /alignment_data/bowtie_index/GCA_000001405.15_GRCh38_full_analysis_set.fna.bowtie_index -1 /alignment_data/paired1.namesort.fq -2 /alignment_data/paired2.namesort.fq
 
 bwa, /data/bwa-v0.7.1/bwa mem -t 32 /data/GCA_000001405.15_GRCh38_full_plus_hs38d1_analysis_set.fna /data/paired1.namesort.fq > results.sam
+
+bwa, samtools collate -O -n 64 -l 1 /data/RMNISTHS_30xdownsample.bam /data/ | samtools fastq -N - | /usr/bin/time --verbose -o bwa_map.time bash -c '/data/bwa-v0.7.1/bwa mem -p -t 32 -R'\''@RG\tID:NA12878_ds30\tSM:NA128787\tLB:NA12878'\'' /data/GCA_000001405.15_GRCh38_full_plus_hs38d1_analysis_set.fna - | samtools view -@ 4 -o result.bwamem1.bam > bwa_map.o 2> bwa_map.e
+
+
+<aligner> | samtools fixmate -m -  - | samtools sort -T /tmp/sort123_ - | samtools markdup --write-index - output.cram
