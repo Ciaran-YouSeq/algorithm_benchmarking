@@ -6,3 +6,15 @@ bwa, samtools collate -O -n 64 -l 1 /data/RMNISTHS_30xdownsample.bam /data/ | sa
 
 
 <aligner> | samtools fixmate -m -  - | samtools sort -T /tmp/sort123_ - | samtools markdup --write-index - output.cram
+
+samtools addreplacerg -r '@RG\tID:definitelyarealid\tSM:samplemcsampleid\tLB:libraryname\tPL:ILLUMINA' -o /data
+/output_w_rg.cram --output-fmt CRAM --input-fmt CRAM /data/output.cram --reference /data/GCA_000001405.15_GRCh38_full_
+analysis_set.fna
+
+gatk BaseRecalibrator --input /data/output.cram --known-sit
+es /data/Homo_sapiens_assembly38.dbsnp138.vcf --reference /data/GCA_000001405.15_GRCh38_full_analysis_set.fna --output
+ /data/recal_data.table
+
+gatk AnalyzeCovariates -bqsr recal_data.table -plots analyze_covariates_plots.pdf
+
+gatk HaplotypeCaller --input /data/output_w_rg.cram --reference /data/GCA_000001405.15_GRCh38_full_analysis_set.fna --output /data/haplotype_caller_output.vcf
