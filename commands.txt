@@ -18,3 +18,16 @@ es /data/Homo_sapiens_assembly38.dbsnp138.vcf --reference /data/GCA_000001405.15
 gatk AnalyzeCovariates -bqsr recal_data.table -plots analyze_covariates_plots.pdf
 
 gatk HaplotypeCaller --input /data/output_w_rg.cram --reference /data/GCA_000001405.15_GRCh38_full_analysis_set.fna --output /data/haplotype_caller_output.vcf
+
+rtg bgzip haplotype_caller_output.vcf
+
+rtg index haplotype_caller_output.vcf.gz
+
+wget https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/NA12878/analysis/GIAB_integration/NIST_RTG_PlatGen_merged_highconfidence_v0.2_Allannotate.vcf.gz
+
+rtg index NIST_RTG_PlatGen_merged_highconfidence_v0.2_Allannotate.vcf.gz
+
+rtg vcfeval --baseline=NIST_RTG_PlatGen_merged_highconfidence_v0.2_Allannotate.vcf.gz --calls=haplotype_caller_output.vcf.gz --output=/data/rtg_output --template=GCA_000001405.15_GRCh38_full_analysis_set_for_rtg.sdf
+
+
+rtg vcfeval --baseline=NA12878.vcf.gz --calls=haplotype_caller_output.vcf.gz --output=/data/rtg_output --template=GCA_000001405.15_GRCh38_full_analysis_set_for_rtg.sdf
