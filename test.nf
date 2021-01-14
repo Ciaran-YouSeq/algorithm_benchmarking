@@ -6,8 +6,8 @@ params.reference_genome_fasta = "/data/GCA_000001405.15_GRCh38_full_analysis_set
 params.bowtie_index = "/data/bowtie2_index/GCA_000001405.15_GRCh38_full_analysis_set.fna.bowtie_index"
 params.known_sites_vcf = "/data/Homo_sapiens_assembly38.dbsnp138.vcf" 
 params.known_sites_vcf_index = "/data/Homo_sapiens_assembly38.dbsnp138.vcf.idx"
-params.bqsr_reference_genome_dict = "/data/GCA_000001405.15_GRCh38_full_analysis_set.dict"
-params.bqsr_reference_genome_index = "/data/GCA_000001405.15_GRCh38_full_analysis_set.fna.fai"
+params.reference_genome_dict = "/data/GCA_000001405.15_GRCh38_full_analysis_set.dict"
+params.reference_genome_fai_index = "/data/GCA_000001405.15_GRCh38_full_analysis_set.fna.fai"
 process ALIGN {
 	
 	input:
@@ -93,8 +93,8 @@ process MAKE_BQSR_TABLE {
 		path 'aligned_bam_f_mates_coord_sort_mrkd_dups' from marked_duplicates
 		path known_sites_vcf from params.known_sites_vcf
 		path reference_genome_fasta from params.reference_genome_fasta
-		path bqsr_reference_genome_dict from params.bqsr_reference_genome_dict
-		path bqsr_reference_genome_index from params.bqsr_reference_genome_index
+		path reference_genome_dict from params.reference_genome_dict
+		path reference_genome_fai_index from params.reference_genome_fai_index
 		path known_sites_vcf_index from params.known_sites_vcf_index
 	output:
 		path 'BQSR_table' into BQSR_table_out
@@ -132,15 +132,74 @@ process ANALYSE_COVARIATES {
 	"""
 }
 
+process INDEX_CRAM {
+	
+	input:
+		path 'aligned_bam_f_mates_coord_sort_mrkd_dups' from marked_duplicates
+	output:
+		path 'indexed_aligned_bam_f_mates_coord_sort_mrkd_dups' into indexed_marked_duplicates
+
+	"""
+	samtools index $aligned_bam_f_mates_coord_sort_mrkd_dups indexed_aligned_bam_f_mates_coord_sort_mrkd_dups
+	"""
+}
+
 process HAPLOTYPE_CALLER {
 
 	input:
-		path 'aligned_bam_f_mates_coord_sort_mrkd_dups' from marked_duplicates
+		path aligned_bam_f_mates_coord_sort_mrkd_dups from marked_duplicates
+		path indexed_aligned_bam_f_mates_coord_sort_mrkd_dups from indexed_marked_duplicates
 		path reference_genome_fasta from params.reference_genome_fasta
+		path reference_genome_fai_index from params.reference_genome_fai_index
+		path reference_genome_dict from params.reference_genome_dict
 	output:
 		path 'haplotype_caller_output' into haplotype_caller_output_channel
 	
+	script:
+	def bam_params = aligned_bam_f_mates_coord_sort_mrkd_dups.collect{ "--input $it" }.join(' ')
 	"""
-	gatk HaplotypeCaller --input $aligned_bam_f_mates_coord_sort_mrkd_dups --reference $reference_genome_fasta --output haplotype_caller_output
+	# fix absolute path in dict file
+	sed -i 's@UR:file:.*${reference_genome_fasta}@UR:file:${reference_genome_fasta}@g' $reference_genome_dict
+	gatk HaplotypeCaller \
+	$bam_params \
+	--reference $reference_genome_fasta \
+	--output haplotype_caller_output
 	"""
+}
+
+process WRITE_HAPLOTYPE_CALLER_VCF {
+	
+	input:
+		path 'haplotype_caller_output' from haplotype_caller_output_channel
+	output:
+		path 'haplotype_caller_output.vcf'
+
+	"""
+	cat $haplotype_caller_output > haplotype_caller_output.vcf
+	"""
+}
+
+process BGZIP_VCF {
+
+	input:
+		path 'haplotype_caller_output' from haplotype_caller_output_channel
+	output:
+		path 'bgzipped_haplotype_caller_output' into bgzipped_haplotype_caller_output_channel
+
+	"""
+	rtg bgzip $haplotype_caller_output
+	"""
+}
+
+process INDEX_VCF {
+
+	input:
+		path 'bgzipped_haplotype_caller_output' from bgzipped_haplotype_caller_output_channel
+	output:
+		path 'indexed_bgzipped_haplotype_caller_output' into indexed_bgzipped_haplotype_caller_output_channel
+	
+	"""
+	rtg index $bgzipped_haplotype_caller_output 
+	"""
+}
 
