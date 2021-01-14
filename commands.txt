@@ -14,9 +14,7 @@ samtools addreplacerg -r '@RG\tID:definitelyarealid\tSM:samplemcsampleid\tLB:lib
 /output_w_rg.cram --output-fmt CRAM --input-fmt CRAM /data/output.cram --reference /data/GCA_000001405.15_GRCh38_full_
 analysis_set.fna
 
-gatk BaseRecalibrator --input /data/output.cram --known-sit
-es /data/Homo_sapiens_assembly38.dbsnp138.vcf --reference /data/GCA_000001405.15_GRCh38_full_analysis_set.fna --output
- /data/recal_data.table
+gatk BaseRecalibrator --input /data/output_w_rg.cram --known-sites /data/Homo_sapiens_assembly38.dbsnp138.vcf --reference /data/GCA_000001405.15_GRCh38_full_analysis_set.fna --output /data/recal_data.table
 
 gatk AnalyzeCovariates -bqsr recal_data.table -plots analyze_covariates_plots.pdf
 
