@@ -25,9 +25,10 @@ class memory_footprint(base_benchmark.base_benchmark):
             threads = self.settings['threads']
         else:
             threads = 32
-        command = "valgrind --tool=massif --massif-out-file=massif.out "+self.settings['command'].format(threads=threads)
+        command = "valgrind --tool=massif --massif-out-file=massif.out "+self.settings['command'].format(threads=threads, output=self.settings['output'])
+        print(command)
         self.run_command(command)
-        command = "ms_print massif.out > massif.txt"
+        command = "/snap/bin/ms_print massif.out > massif.txt"
         self.run_command(command)
         with open("massif.txt", "r") as massif_output:
             massif_output = massif_output.readlines()
