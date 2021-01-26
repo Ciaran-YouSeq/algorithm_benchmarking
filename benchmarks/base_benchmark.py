@@ -21,4 +21,3 @@ class base_benchmark:
         for repeat in range(repeats):
             results["repeat_{repeat}".format(repeat=repeat+1)] = eval("self.run_benchmark()")
         return results
-
